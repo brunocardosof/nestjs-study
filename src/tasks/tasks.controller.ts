@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { DeleteResult } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task-dto';
@@ -21,7 +22,7 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  getAllTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+  getAllTasks(@Query() filterDto: GetTasksFilterDto): Promise<Task[]> {
     return this.tasksService.getTasks(filterDto);
   }
 
