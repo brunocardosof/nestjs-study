@@ -4,6 +4,7 @@ import { CreateTaskDto } from './dto/create-task-dto';
 import { TasksRepository } from './tasks.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class TasksService {
@@ -27,10 +28,12 @@ export class TasksService {
     return this.tasksRepository.createTask(createTaskDto);
   }
 
-  // deleteTask(id: string): void {
-  //   const found = this.getTaskById(id);
-  //   this.tasks =  this.tasks.filter(task => task.id !== found.id);
-  // }
+  async deleteTask(id: string): Promise<void | NotFoundException> {
+    const result = await this.tasksRepository.delete(id);
+
+    if (!!!result.affected) throw new NotFoundException(`Task with ID "${id}" not found`);
+
+  }
 
   // updateTaskStatus(id: string, status: TaskStatus): Task {
   //   const task = this.getTaskById(id);
