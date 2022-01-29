@@ -31,13 +31,15 @@ export class TasksService {
   async deleteTask(id: string): Promise<void | NotFoundException> {
     const result = await this.tasksRepository.delete(id);
 
-    if (!!!result.affected) throw new NotFoundException(`Task with ID "${id}" not found`);
-
+    if (!!!result.affected)
+      throw new NotFoundException(`Task with ID "${id}" not found`);
   }
 
-  // updateTaskStatus(id: string, status: TaskStatus): Task {
-  //   const task = this.getTaskById(id);
-  //   task.status = status;
-  //   return task
-  // }
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
+    task.status = status;
+
+    await this.tasksRepository.save(task);
+    return task;
+  }
 }
