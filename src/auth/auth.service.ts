@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { User } from './user.entity';
 import { UsersRepository } from './user.repository';
 
 @Injectable()
@@ -10,7 +11,7 @@ export class AuthService {
     private usersRepository: UsersRepository,
   ) {}
 
-  async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    this.usersRepository.createUser(authCredentialsDto);
+  async signUp(authCredentialsDto: AuthCredentialsDto): Promise<User | ConflictException | InternalServerErrorException> {
+    return this.usersRepository.createUser(authCredentialsDto);
   }
 }
