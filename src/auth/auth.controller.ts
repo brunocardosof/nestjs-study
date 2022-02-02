@@ -4,6 +4,7 @@ import {
   Controller,
   InternalServerErrorException,
   Post,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
@@ -18,5 +19,12 @@ export class AuthController {
     @Body() authCredentialsDto: AuthCredentialsDto,
   ): Promise<User | ConflictException | InternalServerErrorException> {
     return this.authService.signUp(authCredentialsDto);
+  }
+
+  @Post('signin')
+  signIn(
+    @Body() authCredentialsDto: AuthCredentialsDto,
+  ): Promise<string | UnauthorizedException> {
+    return this.authService.signIn(authCredentialsDto);
   }
 }
