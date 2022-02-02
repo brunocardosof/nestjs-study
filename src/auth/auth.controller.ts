@@ -24,7 +24,7 @@ export class AuthController {
   @Post('signin')
   signIn(
     @Body() authCredentialsDto: AuthCredentialsDto,
-  ): Promise<string | UnauthorizedException> {
+  ): Promise<{ accessToken } | UnauthorizedException> {
     return this.authService.signIn(authCredentialsDto);
   }
 }
